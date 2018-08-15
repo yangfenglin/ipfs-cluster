@@ -23,20 +23,20 @@ jobs:
         - go get -u github.com/mattn/goveralls
         - go get -u golang.org/x/tools/cmd/cover
         - make deps
-        - go test -v -coverprofile=coverage.out -covermode=count ./...
+        - go test -v -race -coverprofile=coverage.out -covermode=count ./...
         - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
     - name: "Main Tests with basic monitor"
       script:
         - go get -u github.com/mattn/goveralls
         - go get -u golang.org/x/tools/cmd/cover
         - make deps
-        - go test -v . -monitor basic
+        - go test -race -v . -monitor basic
     - name: "Main Tests with stateless tracker"
       script:
         - go get -u github.com/mattn/goveralls
         - go get -u golang.org/x/tools/cmd/cover
         - make deps
-        - go test -v . -tracker stateless
+        - go test -race -v . -tracker stateless
     - name: "Golint and go vet"
       script:
         - go get -u golang.org/x/lint/golint
