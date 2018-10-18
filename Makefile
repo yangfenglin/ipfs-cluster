@@ -54,13 +54,13 @@ check:
 	golint -set_exit_status -min_confidence 0.3 ./...
 
 test: deps
-	go test -v ./...
+	go test -race -v ./...
 
 test_sharness: $(sharness)
 	@sh sharness/run-sharness-tests.sh
 
 test_problem: deps
-	go test -timeout 20m -loglevel "DEBUG" -v -run $(problematic_test)
+	go test -race -timeout 20m -loglevel "DEBUG" -v -run $(problematic_test)
 
 $(sharness):
 	@echo "Downloading sharness"
