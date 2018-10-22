@@ -21,7 +21,7 @@ jobs:
       name: "Tests (all modules) + Coverage"
       script:
         - make deps
-        - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+        - travis_wait go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
         - bash <(curl -s https://codecov.io/bash)
     - name: "Main Tests with basic monitor"
       script:
