@@ -1,2 +1,2 @@
-golang([test: "go test -race -v ./..."])
+golang([test: "GORACE=history_size=7 go test -race -v -run TestClusterPeers"])
 
