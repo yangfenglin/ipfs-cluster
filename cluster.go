@@ -1092,11 +1092,12 @@ func (c *Cluster) Peers() []api.ID {
 		logger.Error("an empty list of peers will be returned")
 		return []api.ID{}
 	}
+	lenMembers := len(members)
 
-	peersSerial := make([]api.IDSerial, len(members), len(members))
-	peers := make([]api.ID, len(members), len(members))
+	peersSerial := make([]api.IDSerial, lenMembers, lenMembers)
+	peers := make([]api.ID, lenMembers, lenMembers)
 
-	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, len(members))
+	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, lenMembers)
 	defer rpcutil.MultiCancel(cancels)
 
 	errs := c.rpcClient.MultiCall(
@@ -1132,13 +1133,14 @@ func (c *Cluster) globalPinInfoCid(method string, h cid.Cid) (api.GlobalPinInfo,
 		logger.Error(err)
 		return api.GlobalPinInfo{}, err
 	}
+	lenMembers := len(members)
 
-	replies := make([]api.PinInfoSerial, len(members), len(members))
+	replies := make([]api.PinInfoSerial, lenMembers, lenMembers)
 	arg := api.Pin{
 		Cid: h,
 	}
 
-	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, len(members))
+	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, lenMembers)
 	defer rpcutil.MultiCancel(cancels)
 
 	errs := c.rpcClient.MultiCall(
@@ -1197,10 +1199,11 @@ func (c *Cluster) globalPinInfoSlice(method string) ([]api.GlobalPinInfo, error)
 		logger.Error(err)
 		return []api.GlobalPinInfo{}, err
 	}
+	lenMembers := len(members)
 
-	replies := make([][]api.PinInfoSerial, len(members), len(members))
+	replies := make([][]api.PinInfoSerial, lenMembers, lenMembers)
 
-	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, len(members))
+	ctxs, cancels := rpcutil.CtxsWithCancel(c.ctx, lenMembers)
 	defer rpcutil.MultiCancel(cancels)
 
 	errs := c.rpcClient.MultiCall(
