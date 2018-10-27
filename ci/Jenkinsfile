@@ -1,2 +1,2 @@
-golang([test: "go test -race -v ./..."])
+golang([test: "go test -timeout 20m -race -v ./..."])
 
