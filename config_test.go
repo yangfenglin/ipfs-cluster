@@ -78,19 +78,18 @@ var testingIpfsCfg = []byte(`{
     "unpin_timeout": "15s"
 }`)
 
-var testingTrackerCfg = []byte(`
-{
+var testingTrackerCfg = []byte(`{
       "max_pin_queue_size": 4092,
       "concurrent_pins": 1
 }
 `)
 
 var testingMonCfg = []byte(`{
-    "check_interval": "300ms"
+    "check_interval": "400ms"
 }`)
 
 var testingDiskInfCfg = []byte(`{
-    "metric_ttl": "200ms",
+    "metric_ttl": "500ms",
     "metric_type": "freespace"
 }`)
 
