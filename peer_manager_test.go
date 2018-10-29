@@ -586,6 +586,9 @@ func TestClustersPeerRejoin(t *testing.T) {
 	c0, m0 := createOnePeerCluster(t, 0, testingClusterSecret)
 	clusters[0] = c0
 	mocks[0] = m0
+
+	delay()
+
 	err = c0.Join(clusterAddr(clusters[1]))
 	if err != nil {
 		t.Fatal(err)
