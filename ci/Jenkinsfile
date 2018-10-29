@@ -1,2 +1,1 @@
-golang([test: "go test -timeout 20m -race -v ./..."])
-
+golang([test: "go test -timeout 20m -race -v -loglevel=info -logfacs=cluster,consensus,optracker,pintracker"])
