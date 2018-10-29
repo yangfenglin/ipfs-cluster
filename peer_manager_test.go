@@ -256,6 +256,7 @@ func TestClustersPeerRemoveSelf(t *testing.T) {
 				}
 			}
 		}
+		// potential hanging place
 		_, more := <-clusters[i].Done()
 		if more {
 			t.Error("should be done")
