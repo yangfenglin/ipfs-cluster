@@ -12,14 +12,11 @@ import (
 	"github.com/ipfs/ipfs-cluster/adder/local"
 	"github.com/ipfs/ipfs-cluster/adder/sharding"
 	"github.com/ipfs/ipfs-cluster/api"
-	"github.com/ipfs/ipfs-cluster/observations"
 	"github.com/ipfs/ipfs-cluster/pstoremgr"
 	"github.com/ipfs/ipfs-cluster/rpcutil"
 	"github.com/ipfs/ipfs-cluster/state"
 	"github.com/ipfs/ipfs-cluster/version"
 
-	"github.com/gxed/opencensus-go/stats"
-	"github.com/gxed/opencensus-go/tag"
 	"github.com/gxed/opencensus-go/trace"
 	ocgorpc "github.com/lanzafame/go-libp2p-ocgorpc"
 
@@ -1510,67 +1507,4 @@ func diffPeers(peers1, peers2 []peer.ID) (added, removed []peer.ID) {
 		}
 	}
 	return
-}
-
-type metricInit func(context.Context, *rpc.Client) error
-
-var (
-	defaultMetricInitFuncs = []metricInit{
-		initPinCountMetric,
-		initTrackerPinCountMetric,
-	}
-)
-
-func initPinCountMetric(ctx context.Context, rpc *rpc.Client) error {
-	var pins []api.PinSerial
-	err := rpc.CallContext(
-		ctx,
-		"",
-		"Cluster",
-		"Pins",
-		struct{}{},
-		&pins,
-	)
-	if err != nil {
-		logger.Error(err)
-		return err
-	}
-	stats.Record(ctx, observations.PinCountMetric.M(int64(len(pins))))
-	return nil
-}
-
-func initTrackerPinCountMetric(ctx context.Context, rpc *rpc.Client) error {
-	var id api.IDSerial
-	err := rpc.CallContext(
-		ctx,
-		"",
-		"Cluster",
-		"ID",
-		struct{}{},
-		&id,
-	)
-	if err != nil {
-		logger.Error(err)
-		return err
-	}
-
-	var pins []api.PinInfoSerial
-	err = rpc.CallContext(
-		ctx,
-		"",
-		"Cluster",
-		"StatusAllLocal",
-		struct{}{},
-		&pins,
-	)
-	if err != nil {
-		logger.Error(err)
-		return err
-	}
-	ctx, err = tag.New(
-		ctx,
-		tag.Upsert(observations.HostKey, id.ToID().ID.String()),
-	)
-	stats.Record(ctx, observations.TrackerPinCountMetric.M(int64(len(pins))))
-	return nil
 }
